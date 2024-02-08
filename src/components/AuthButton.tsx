@@ -10,7 +10,7 @@ const AuthButton = (props: Props) => {
   if (props.isSignedIn) return <UserButton />
 
   return (
-    <div className="rounded-full bg-accent-color px-6 py-2 font-bold">
+    <div className="rounded-full bg-accent-color px-4 py-1 font-bold">
       <SignInButton />
     </div>
   )
