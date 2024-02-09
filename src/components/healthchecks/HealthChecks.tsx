@@ -1,76 +1,59 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useAuth } from '@clerk/clerk-react'
+import { useQuery } from '@tanstack/react-query'
 
 export function ServerHealthCheck() {
-  if (import.meta.env.VITE_ENV !== 'DEV') return null
+  if (import.meta.env.VITE_ENV === 'DEV') return null
+  const { getToken } = useAuth()
 
-  const [data, setData] = useState('')
+  const { isPending, error, data } = useQuery({
+    queryKey: ['healthCheck'],
+    queryFn: async () =>
+      fetch(`${import.meta.env.VITE_SERVER_URL}/servercheck`, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      }).then((response) => response.json()),
+  })
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_SERVER_URL}/servercheck`)
-      .then((data) => {
-        console.log(data)
-        setData(data?.data)
-      })
-      .catch((error) => {
-        console.log(error.message?.toString())
-      })
-  }, [])
+  if (isPending) return 'Loading...'
 
-  if (data === 'OK') return <div>SERVER OK</div>
-  return <div>SERVER ERROR</div>
+  if (error) return 'An Error has occured: ' + error.message
+
+  return <div>{data.status}</div>
 }
 
 export function AuthHealthCheck() {
-  if (import.meta.env.VITE_ENV !== 'DEV') return null
-
   const { getToken } = useAuth()
-  const token = getToken()
 
-  const [data, setData] = useState('')
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_SERVER_URL}/authcheck`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((data) => {
-        console.log(data)
-        setData(data?.data)
-      })
-      .catch((error) => {
-        console.log(error.message?.toString())
-      })
+  const { isPending, error, data } = useQuery({
+    queryKey: ['healthCheck'],
+    queryFn: async () =>
+      fetch(`${import.meta.env.VITE_SERVER_URL}/authcheck`, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      }).then((response) => response.json()),
   })
 
-  if (data === 'OK') return <div>AUTH OK</div>
-  return <div>AUTH ERROR</div>
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An Error has occured: ' + error.message
+
+  return <div>{data.status}</div>
 }
 
 export function DatabaseHealthCheck() {
-  if (import.meta.env.VITE_ENV !== 'DEV') return null
+  if (import.meta.env.VITE_ENV === 'DEV') return null
 
   const { getToken } = useAuth()
-  const token = getToken()
 
-  const [data, setData] = useState('')
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_SERVER_URL}/dbcheck`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((data) => {
-        console.log(data)
-        setData(data?.data)
-      })
-      .catch((error) => {
-        console.log(error.message?.toString())
-      })
+  const { isPending, error, data } = useQuery({
+    queryKey: ['healthCheck'],
+    queryFn: async () =>
+      fetch(`${import.meta.env.VITE_SERVER_URL}/dbcheck`, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      }).then((response) => response.json()),
   })
 
-  if (data === 'OK') return <div>DB OK</div>
-  return <div>DB ERROR</div>
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An Error has occured: ' + error.message
+
+  return <div>{data.status}</div>
 }
