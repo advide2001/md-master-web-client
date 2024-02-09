@@ -14,7 +14,7 @@
     "@clerk/clerk-react": "4.12.4",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.1.1",
-    "axios": "^1.6.5",
+    "@tanstack/react-query": "^5.18.1",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
