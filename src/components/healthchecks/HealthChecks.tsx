@@ -2,7 +2,7 @@ import { useAuth } from '@clerk/clerk-react'
 import { useQuery } from '@tanstack/react-query'
 
 export function ServerHealthCheck() {
-  if (import.meta.env.VITE_ENV === 'DEV') return null
+  if (import.meta.env.VITE_ENV !== 'DEV') return null
   const { getToken } = useAuth()
 
   const { isPending, error, data } = useQuery({
@@ -21,10 +21,12 @@ export function ServerHealthCheck() {
 }
 
 export function AuthHealthCheck() {
+  if (import.meta.env.VITE_ENV !== 'DEV') return null
+
   const { getToken } = useAuth()
 
   const { isPending, error, data } = useQuery({
-    queryKey: ['healthCheck'],
+    queryKey: ['authcheck'],
     queryFn: async () =>
       fetch(`${import.meta.env.VITE_SERVER_URL}/authcheck`, {
         headers: { Authorization: `Bearer ${await getToken()}` },
@@ -39,12 +41,12 @@ export function AuthHealthCheck() {
 }
 
 export function DatabaseHealthCheck() {
-  if (import.meta.env.VITE_ENV === 'DEV') return null
+  if (import.meta.env.VITE_ENV !== 'DEV') return null
 
   const { getToken } = useAuth()
 
   const { isPending, error, data } = useQuery({
-    queryKey: ['healthCheck'],
+    queryKey: ['dbcheck'],
     queryFn: async () =>
       fetch(`${import.meta.env.VITE_SERVER_URL}/dbcheck`, {
         headers: { Authorization: `Bearer ${await getToken()}` },
