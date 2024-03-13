@@ -1,4 +1,5 @@
-import { SignInButton, UserButton } from '@clerk/clerk-react'
+import { UserButton } from '@clerk/clerk-react'
+import LogInButton from './LogInButton'
 
 interface Props {
   isSignedIn: boolean | undefined
@@ -9,11 +10,7 @@ const AuthButton = (props: Props) => {
   if (!props.isLoaded) return null
   if (props.isSignedIn) return <UserButton />
 
-  return (
-    <div className="rounded-full bg-accent-color px-4 py-1 font-bold">
-      <SignInButton />
-    </div>
-  )
+  return <LogInButton />
 }
 
 export default AuthButton
