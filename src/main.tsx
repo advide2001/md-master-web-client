@@ -9,6 +9,7 @@ import ErrorPage from './pages/ErrorPage'
 import RootPage from './pages/RootPage'
 import TestElement from './components/TestElement'
 import LandingPage from './pages/LandingPage'
+import ProjectPage from './pages/ProjectPage'
 
 const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: 'prod',
         element: <TestElement />,
+      },
+      {
+        path: 'projects',
+        element: <ProjectPage />,
       },
     ],
   },
